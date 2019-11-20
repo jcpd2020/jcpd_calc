@@ -1,16 +1,17 @@
-#ifndef __TOKENISER__H
-#define __TOKENISER__H
+#ifndef TOKENISER_H
+#define TOKENISER_H
 
 char *concater(char *str1, char *str2);
 
+void saveToken(int i, char *str,  int token_counter);
+
 int isOperator(char *maybe_op);
 
-int tokenise();
+int writeToFile(int token_counter);
 
-int writeToFile();
+char tokenise();
 
-int main();
 
-void saveToken();
+
 
 #endif

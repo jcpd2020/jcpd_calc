@@ -5,7 +5,6 @@
 #define MAXCHAR 1000
 
 char tokens[MAXCHAR][MAXCHAR];
-char str[MAXCHAR];
 FILE *file_pointer;
 int token_counter = 0;
 char temp[2];
@@ -30,7 +29,7 @@ char *concater(char *str1, char *str2){
     return result;
 }
 
-void saveToken(int i){
+void saveToken(int i, char *str){
     char *res;
     char *character1 = &(*tokens[token_counter]);
     char *character2 = &(str[i]);
@@ -67,7 +66,8 @@ int writeToFile(){
 }
 
 int tokenise(){
-	int str_length;
+    char str[MAXCHAR];
+    int str_length;
     int make_new_token_flag = 0;
     token_counter = 0;
     int writing_negative_number = 0;
@@ -83,22 +83,22 @@ int tokenise(){
                     token_counter++;
                 }
                 printf("\n\nfirst line: %s\n", tokens[token_counter-2]);
-                saveToken(i);
+                saveToken(i, (char *)str);
                 make_new_token_flag = 0;
                 writing_negative_number = 1;
             }
             
-            else if(isdigit(str[i])){
+            else if(isdigit(str[i]) || str[i] == '.'){
                 if(make_new_token_flag == 1 && writing_negative_number !=1){
                     token_counter ++;
                     make_new_token_flag = 0;
                 }
-                saveToken(i);                
+                saveToken(i, (char *)str);                
             }
             
             else if (str[i] != ' ' && !(isalpha(str[i]))){
                 token_counter++;
-                saveToken(i);
+                saveToken(i, (char *)str);
                 make_new_token_flag = 1;
                 writing_negative_number = 0;
             }

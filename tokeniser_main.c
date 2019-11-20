@@ -2,6 +2,7 @@
 
 
 int main(){
-    tokenise();
-    writeToFile();
+    char tokens = tokenise();
+    
+    writeToFile(tokens);
 }
