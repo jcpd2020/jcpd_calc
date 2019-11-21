@@ -1,15 +1,19 @@
 #ifndef TOKENISER_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 #define TOKENISER_H
 
 char *concater(char *str1, char *str2);
 
-void saveToken(int i, char *str,  int token_counter);
+void saveToken(int i, char str[1000], char tokens[1000][1000], int *token_counter_ptr, char temp[2]);
 
 int isOperator(char *maybe_op);
 
-int writeToFile(int token_counter);
+int writeToFile(FILE *file_pointer, int token_counter, char tokens[1000][1000]);
 
-char tokenise();
+int tokenise(char tokens[1000][1000]);
 
 
 
