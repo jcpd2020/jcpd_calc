@@ -11,8 +11,8 @@ TESTS{
     
     char test_tokens[1000][1000];
     
-    plan(13);
-    //Ensure that the isOperator function for the tokeniser works correctly. It should return 0 if the string is not an operator, and 1 if it is
+    //plan(10);
+    //Test that the isOperator function for the tokeniser works correctly. It should return 0 if the string is not an operator, and 1 if it is
     char *op_input_pointer = "3";
     ok(isOperator(op_input_pointer) == 0, "3 is not an Operator");
     ok(isOperator("-22") == 0, "-22 is not an Operator");
@@ -45,32 +45,40 @@ TESTS{
     
     //Test the writing to line function
     FILE *file_pointer;
-    char *line = NULL;
+    char line[256];
     writeToFile(file_pointer, test_token_counter, test_tokens);
     
     int test_total_tokens = test_token_counter;
     test_token_counter = 0;
-    int test_wrong_line_flag = 0;
-    size_t len = 0;
-    ssize_t read;
-    
     file_pointer = fopen("useroutput.txt", "r");
-    char *b = NULL;
-    strcpy(b, line);
-    getline(&line, b, file_pointer);
-    is(test_tokens[0], line, "Compare the token to the line in the file");
-    /*if (file_pointer == NULL){
-        exit(EXIT_FAILURE);
-    }
     
-    while((read = getline(&line, &len, file_pointer)) != -1){
-        char *b;
-        strcpy(b, line);
-        is(test_tokens[test_token_counter], line, "Compare the token to the line in the file");
+    while (fgets(line, 1000, file_pointer)){
+        //remove the newline character at the end of each line read from a file
+        line[strlen(line)-1] = '\0';
+        is(test_tokens[test_token_counter], line, "Compare the token to the line");
         test_token_counter++;
-    }*/
-    
+    }
     fclose(file_pointer);
+    
+    //Test that the whole tokeniser works, from start to finish
+    file_pointer = fopen("userinput.txt", "w");
+    fprintf(file_pointer, "%s\n", "21 * -34/87^2 + 8(67%3)"); 
+    fclose(file_pointer);
+    
+    char final_test_tokens[1000][1000];
+    int total_test_tokens = tokenise(final_test_tokens);
+    writeToFile(file_pointer, total_test_tokens, final_test_tokens);
+    test_token_counter = 0;
+    file_pointer = fopen("useroutput.txt", "r");
+    while (fgets(line, 1000, file_pointer)){
+        //remove the newline character at the end of each line read from a file
+        line[strlen(line)-1] = '\0';
+        is(final_test_tokens[test_token_counter], line, "Compare the token in the final token list to the line");
+        test_token_counter++;
+    }
+    fclose(file_pointer);
+        
+    
     
     
 	

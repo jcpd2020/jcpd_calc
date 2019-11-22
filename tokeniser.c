@@ -118,8 +118,8 @@ int tokenise(char tokens[MAXCHAR][MAXCHAR]){
 	}
 	token_counter--;
 	fclose(file_pointer);
-    writeToFile(file_pointer, token_counter, tokens);
+    //writeToFile(file_pointer, token_counter, tokens);
     
     
-    return 0;
+    return token_counter;
 }
