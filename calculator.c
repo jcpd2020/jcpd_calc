@@ -1,7 +1,6 @@
 #include "tokeniser.h"
 #define MAXCHAR 1000
-//Paul Gunnarsson
-//117430404
+
 
 int main(){
     char tokens[MAXCHAR][MAXCHAR];
