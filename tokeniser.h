@@ -18,7 +18,7 @@ void writeToFile(FILE *file_pointer, int token_counter, char tokens[1000][1000])
 
 int tokenise(char tokens[1000][1000]);
 
-
+void do_the_thing(char * filename);
 
 
 #endif

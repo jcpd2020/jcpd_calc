@@ -81,23 +81,27 @@ int tokenise(char tokens[MAXCHAR][MAXCHAR]){
 		str_length = strlen(str);
         for(int i = 0; i<str_length-1;i++){
             if((str[i] == '-' && token_counter == 0) || (str[i] == '-' && isOperator(tokens[token_counter-1]) == 1)){
+                //printf("considering: %s to be it's own token\n", tokens[token_counter]);
                 saveToken(i, str, tokens, &token_counter, temp);
                 token_counter++;
                 writing_negative_number = 1;
+                
             }
-
-            else if(isdigit(str[i])){
+            
+            else if(isdigit(str[i]) || str[i] == '.'){
                 if(token_counter == 0){}
                 else if(writing_negative_number == 1 || !(isOperator(tokens[token_counter-1]))){
+                    
                     token_counter--;
                 }
-                
+                //printf("considering: %s to be it's own token\n", tokens[token_counter]);
                 saveToken(i, str, tokens, &token_counter, temp);
                 token_counter++;
                 writing_negative_number = 0;
             }
 
             else if (str[i] != ' ' && !(isalpha(str[i]))){
+                //printf("%s\n", "space or letter detected");
                 saveToken(i, str, tokens, &token_counter, temp);
                 token_counter++;
                 writing_negative_number = 0;
@@ -118,4 +122,16 @@ int tokenise(char tokens[MAXCHAR][MAXCHAR]){
 	token_counter--;
 	fclose(file_pointer);
     return token_counter;
+}
+
+
+void do_the_thing(char * filename) {
+    //printf("%s\n", "Starting tokeniser");
+    char tokens[MAXCHAR][MAXCHAR];
+    int token_count = tokenise(tokens);
+    //printf("%s\n", "done tokenising");
+    FILE *bigcunt = fopen(filename, "w");
+    writeToFile(bigcunt, token_count, tokens);
+    fclose(bigcunt);
+    //printf("%s\n", "done writing to file");
 }
