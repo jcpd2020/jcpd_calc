@@ -9,7 +9,11 @@ Paul Gunnarsson
 */
 
 
-//Take in pointers to two strings, join the strings together and return a pointer to the result 
+/*
+ * Takes in two pointers, each pointing to a string.
+ * Joins the two strings together into one long string.
+ * Returns a pointer to this new string.
+ */
 char *concater(char *str1, char *str2){
     int length = strlen(str1) + strlen(str2);
     char *result = (char *) malloc(sizeof(char) * (length + 1));
@@ -28,7 +32,12 @@ char *concater(char *str1, char *str2){
     return result;
 }
 
-//Take in the input string character pointer, the string, the 2d token array, the pointer to the token counter and a character array that can only store 2 characters. It will save the character in the string (indexed by i) to the appropriate token slot in the 2d array.
+
+/*
+ * Takes in a string, a string character pointer, the 2d token array, a pointer to different tokens within that array, and a small character array with room for only two characters.
+ * This function saves the indexed character in the input string into a token slot in the 2d array. It will either write to a new token, or continue writing to the last token.
+ * It returns nothing.
+ */
 void saveToken(int i, char str[MAXCHAR], char tokens[MAXCHAR][MAXCHAR], int *token_counter_ptr, char temp[2]){
     char *res;
     char *character1 = tokens[*token_counter_ptr];
@@ -39,7 +48,12 @@ void saveToken(int i, char str[MAXCHAR], char tokens[MAXCHAR][MAXCHAR], int *tok
     free(res);
 }
 
-//Checks if the given string pointer points to an operator. Returns a 1 if it's an operator, or a 0 if it's an operand.
+
+/*
+ * Takes in a pointer to a character which might be an operator.
+ * Determines if the character is an operator or an operand.
+ * Returns a 1 if it is an operator, or a 0 if it is not.
+ */
 int isOperator(char *maybe_op){
     char op = *maybe_op;
     char op_temp[2];
@@ -54,7 +68,11 @@ int isOperator(char *maybe_op){
     return 0;
 }
 
-//Take in a 2d array and the amount of tokens, then put each token on its own line.
+/*
+ * Takes in a file pointer, a token counter for indexing the 2d token array and the 2d array of tokens.
+ * It will write each token to a new line in the file
+ * It will return nothing.
+ */
 void writeToFile(FILE *file_pointer, int token_counter, char tokens[MAXCHAR][MAXCHAR]){
     file_pointer = fopen("jcpd.io", "w");
     int i = 0;
@@ -62,11 +80,13 @@ void writeToFile(FILE *file_pointer, int token_counter, char tokens[MAXCHAR][MAX
         fprintf(file_pointer, "%s\n", tokens[i]);
     }
     fclose(file_pointer);
-    free(file_pointer);
-    
 }
 
-//Take in a 2d array to store the tokens, then reads the jcpd.io file to split the user input up into tokens, saving them into the array. Once done, it returns the token counter, which will have recorded the number of tokens in the array.
+/*
+ * Takes in the 2d array of tokens which the tokeniser will work with
+ * It will read in the file, seperating each token into a new line
+ * It will return the number of tokens in the array
+ */
 int tokenise(char tokens[MAXCHAR][MAXCHAR]){
     char temp[2];
     int token_counter = 0;
@@ -81,7 +101,6 @@ int tokenise(char tokens[MAXCHAR][MAXCHAR]){
 		str_length = strlen(str);
         for(int i = 0; i<str_length-1;i++){
             if((str[i] == '-' && token_counter == 0) || (str[i] == '-' && isOperator(tokens[token_counter-1]) == 1)){
-                //printf("considering: %s to be it's own token\n", tokens[token_counter]);
                 saveToken(i, str, tokens, &token_counter, temp);
                 token_counter++;
                 writing_negative_number = 1;
@@ -94,14 +113,12 @@ int tokenise(char tokens[MAXCHAR][MAXCHAR]){
                     
                     token_counter--;
                 }
-                //printf("considering: %s to be it's own token\n", tokens[token_counter]);
                 saveToken(i, str, tokens, &token_counter, temp);
                 token_counter++;
                 writing_negative_number = 0;
             }
 
             else if (str[i] != ' ' && !(isalpha(str[i]))){
-                //printf("%s\n", "space or letter detected");
                 saveToken(i, str, tokens, &token_counter, temp);
                 token_counter++;
                 writing_negative_number = 0;
@@ -109,29 +126,21 @@ int tokenise(char tokens[MAXCHAR][MAXCHAR]){
 
         }
         
-        //For debugging purposes. Prints out the list of tokens in the 2d array.
-        /*printf("\nToken list:\n-------------------\n");
-        char *token_pointer;        
-        for(int j = 0; j <= token_counter-1; j++){
-            token_pointer = &(*tokens[j]);
-            printf("Token: %s\n", tokens[j]);
-
-        }*/
-
-	}
+    }
 	token_counter--;
 	fclose(file_pointer);
     return token_counter;
 }
 
-
+/*
+ * It takes in the interface file name
+ * It runs the tokeniser and then writes each token to a new line
+ * It returns nothing
+ */
 void runTokeniser(char * filename) {
-    //printf("%s\n", "Starting tokeniser");
     char tokens[MAXCHAR][MAXCHAR];
     int token_count = tokenise(tokens);
-    //printf("%s\n", "done tokenising");
     FILE *file_pointer = fopen(filename, "w");
     writeToFile(file_pointer, token_count, tokens);
     fclose(file_pointer);
-    //printf("%s\n", "done writing to file");
 }
