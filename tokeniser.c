@@ -125,13 +125,13 @@ int tokenise(char tokens[MAXCHAR][MAXCHAR]){
 }
 
 
-void do_the_thing(char * filename) {
+void runTokeniser(char * filename) {
     //printf("%s\n", "Starting tokeniser");
     char tokens[MAXCHAR][MAXCHAR];
     int token_count = tokenise(tokens);
     //printf("%s\n", "done tokenising");
-    FILE *bigcunt = fopen(filename, "w");
-    writeToFile(bigcunt, token_count, tokens);
-    fclose(bigcunt);
+    FILE *file_pointer = fopen(filename, "w");
+    writeToFile(file_pointer, token_count, tokens);
+    fclose(file_pointer);
     //printf("%s\n", "done writing to file");
 }

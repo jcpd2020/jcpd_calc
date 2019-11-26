@@ -6,13 +6,14 @@
 #define MAXCHAR 1000
 
 
-int main(){
+int runCalculator(){
     //char filee[1000];
     char * filename = "jcpd.io";
     //FILE * file_pointer = NULL;
     
     //tokeniser
-    do_the_thing(filename);
+    runTokeniser(filename);
+    //printf("Done with tokeniser\n");
     /*file_pointer = fopen("jcpd.io", "r");
     while (fgets(filee, MAXCHAR, file_pointer)){
         //remove the newline character at the end of each line read from a file

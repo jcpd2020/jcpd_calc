@@ -130,6 +130,12 @@ int calculate() {
         float answer = pop();
         printf("Answer: %f\n", answer);
         fclose(fp);
+        
+        // write answer to file (for testing)
+        fp = fopen(JCPD_FILENAME, "w");
+        fprintf(fp, "%f", answer);
+        fclose(fp);
+        
         returnval = 0;
     } else {
         fputs("ERROR: file not found\n", stderr);

@@ -40,7 +40,7 @@ void readFile(FILE *file_pointer, char line[1000], char file_inputs[100][100], i
     *
     * 
     */
-    printf("%s\n","Look");
+    //printf("%s\n","Look");
     file_pointer = fopen("jcpd.io", "r");
     char *maybe_op;
     int line_pointer = 0;
