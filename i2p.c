@@ -51,22 +51,20 @@ int decideOpImportance(char *op){
     if((*op == '^')){
         return 3;
     }
-
+    
     else if((*op == '*') || (*op == '/') || (*op == '%')){
         return 2;
     }
-
+    
     else if((*op == '+') || (*op == '-')){
         return 1;
     }
+    //return 0;    
 }
 
-void organiseStack(FILE *file_pointer, char stack[20][20], int *stack_counter_ptr, char file_inputs[100][100], int *file_input_counter_ptr){
+void organiseStack(FILE *file_pointer, char stack[20][20], int stack_counter, int *stack_counter_ptr, char file_inputs[100][100], int *file_input_counter_ptr){
     /*
     *   This takes a pointer to the file, the stack of operators , a pointer for this stack , a stack of everything read in from the file, and a pointer for this stack as input.
-    *   
-    *
-    *   It finishes
     */
     file_pointer = fopen("jcpd.io", "w");
     char *current_op;
@@ -74,23 +72,22 @@ void organiseStack(FILE *file_pointer, char stack[20][20], int *stack_counter_pt
     // Iterates through the file.
     for(int index=0; index<*file_input_counter_ptr; index++){
         if(isOperatorI2P(file_inputs[index])){
-            
             // Checks if the token is an operator.
-            if((*file_inputs[index] == '/') || (*file_inputs[index] == '*') || (*file_inputs[index] == '+') || (*file_inputs[index] == '-') || (*file_inputs[index] == '^') || (*file_inputs[index] == '%') || (*file_inputs[index] == '(') || (*file_inputs[index] == ')')){
+            if((*file_inputs[index] == '/') || (*file_inputs[index] == '*') || (*file_inputs[index] == '+') || (*file_inputs[index] == '-') || (*file_inputs[index] == '^') || (*file_inputs[index] == '%') || (*file_inputs[index] == '(') || (*file_inputs[index] == ')')){   
                 
                 /*  Checks if the confirmed operator is a opening or closing bracket.
                 *   Brackets don't work, so they were ignored for this calculator.
                 */
                 if((*file_inputs[index] == '(') || (*file_inputs[index] == ')')){}
-
+                
                 // The token is confimed as an operator, now its importance (priority) is determined.
-                else if((*stack_counter_ptr == 0) || (decideOpImportance(file_inputs[index]) > decideOpImportance(stack[*stack_counter_ptr-1]))){
+                else if((*stack_counter_ptr == 0) || (decideOpImportance(file_inputs[index]) > decideOpImportance(stack[*stack_counter_ptr-1]))){                    
                     strcpy(stack[*stack_counter_ptr], file_inputs[index]);
-                    (*stack_counter_ptr)++;
+                    (*stack_counter_ptr)++;                    
                     current_op = file_inputs[index];
                     current_op_prec = decideOpImportance(file_inputs[index]);
                 }
-
+                
                 else{
                     (*stack_counter_ptr)--;
                     while(decideOpImportance(file_inputs[index]) <= decideOpImportance(stack[*stack_counter_ptr])){
@@ -107,7 +104,7 @@ void organiseStack(FILE *file_pointer, char stack[20][20], int *stack_counter_pt
                 }
             }
         }
-
+        
         else{
             // If the token is not an operator, it is an operand which gets directly printed to the file.
             fprintf(file_pointer, "%s\n", file_inputs[index]);
@@ -118,7 +115,7 @@ void organiseStack(FILE *file_pointer, char stack[20][20], int *stack_counter_pt
         fprintf(file_pointer, "%s\n", stack[*stack_counter_ptr]);
         (*stack_counter_ptr)--;
     }
-    fclose(file_pointer);
+    fclose(file_pointer);    
 }
 
 void infixToPostfix(){
@@ -130,10 +127,11 @@ void infixToPostfix(){
 	char* e, x;
     char line[1000];
     FILE *file_pointer;
-    int *stack_counter_ptr = 0;
+    int stack_counter = 0;
+    int *stack_counter_ptr = &stack_counter;
     char stack[20][20];
     char file_inputs[100][100];
     int file_input_counter = 0;
     readFile(file_pointer, line, file_inputs, &file_input_counter);
-    organiseStack(file_pointer, stack, stack_counter_ptr, file_inputs, &file_input_counter);
+    organiseStack(file_pointer, stack, stack_counter, stack_counter_ptr, file_inputs, &file_input_counter);
 }
