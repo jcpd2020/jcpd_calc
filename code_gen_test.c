@@ -7,6 +7,7 @@
 
 TESTS{
     plan(12);    //Num of tests running
+    
     char *op_input_pointer = "3";
     is(operatorSwitching(op_input_pointer), "Error", "3 is not an Operator, Error should be returned");
     is(operatorSwitching("/"), "dv", "'/' is an operator so 'dv' should be returned");
@@ -35,8 +36,8 @@ TESTS{
 
     ok(isNumber(num_test_fail, temp_fail) ==0, "The letters at the start of 'ab5.78..' results in a 0 being returned. Not a number");
 
-    //write to a file 
-    //run the test on the file - generate_code();
+
+    //Integration test
     FILE * test_file;
     char line[MAXCHAR];
 
@@ -58,7 +59,7 @@ TESTS{
 
     int i = 0;
     while (fgets(line, MAXCHAR, test_file)) {
-        is(line, tokens[i], "line has been converted correctly");
+        is(line, tokens[i], "line should be converted correctly");
         i += 1;
     }
 

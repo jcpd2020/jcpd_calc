@@ -57,7 +57,6 @@ char * operatorSwitching(char *first_char){
     * Returns: operator - pointer to a char array containing the assembly code
     */
     int intOperator=*first_char - '0';  //Converts the character to it's integer equivalent (Needed for case switching)
-    printf("%i\n", intOperator);
     char *operator;
 
     switch(intOperator){  //Using the resulting number, convert to assembly code
@@ -88,6 +87,11 @@ char * operatorSwitching(char *first_char){
 }
 
 int generate_code(char * filename){
+    /*
+    * Input: *filename - a character array containing the name of the file to be operated on
+    * Reads through the given file line by line, converting the contents of said line to preset assembly language and writing the new line to a file
+    * Returns: exit code 
+    */
 
     char * input =filename;
     char output[]="output.txt";
