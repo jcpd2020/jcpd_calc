@@ -2,6 +2,7 @@
 
 
 #include <ctap.h>
+#include <stdio.h>
 #include "stack.h"
 #include "vm.h"
 
@@ -9,7 +10,7 @@ TESTS {
 
     // stack test
 
-    plan(11);
+    plan(14);
 
     ok(is_empty() == 1, "Stack should be considered empty with nothing in it");
     ok(is_full() == 0, "Stack should not be full with less than max items in it");
@@ -55,19 +56,16 @@ TESTS {
 
     // vm test
 
-    char * test_line_1 = (char *) malloc(257);
-    char * test_line_2 = (char *) malloc(257);
-    char * test_line_3 = (char *) malloc(257);
     char * test_opcode = (char *) malloc(3);
     float test_number;
 
-    test_line_1 = "lf 50.55";
-    test_line_2 = "li 20";
-    test_line_3 = "ad";
+    char * test_line_1 = "lf 50.55";
+    char * test_line_2 = "li 20";
+    char * test_line_3 = "ad";
 
     grab_opcode(test_line_1, test_opcode);
     grab_number(test_line_1, &test_number);
-    ok(test_opcode == "lf", "Opcode should have been parsed from line as lf");
+    is(test_opcode, "lf", "Opcode should have been parsed from line as lf");
     ok(test_number == 50.55f, "Number should have been parsed from line as 50.55");
 
     do_instruction(test_line_1);
@@ -75,8 +73,7 @@ TESTS {
     do_instruction(test_line_3);
     ok(pop() == 70.55f, "Instructions should have calculated answer to be 70.55");
 
-    free(test_line_1);
-    free(test_line_2);
-    free(test_line_3);
     free(test_opcode);
+
+
 }

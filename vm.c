@@ -9,8 +9,6 @@
 #define JCPD_FILENAME "jcpd.io"
 #define MAXLINELENGTH 256
 
-
-
 void do_add() {
     /* input: none
      * action: add top two items on stock
@@ -142,7 +140,8 @@ int calculate() {
         returnval = 1;
     }
     free(line);
-    fclose(fp);
+    //fclose(fp);
     return returnval;
 }
+
 
