@@ -1,7 +1,10 @@
 calculator: calculator.c tokeniser.c tokeniser.h i2p.c i2p.h code_gen.c code_gen.h stack.c stack.h vm.c vm.h calculator_main.c calculator.h
 	gcc -o calculator_program calculator.c calculator_main.c tokeniser.c i2p.c code_gen.c stack.c vm.c -lm
+	echo "2+2" > jcpd.io
+	./calculator_program
+	
 
-test: test_tokeniser test_i2p test_code_gen test_vm
+test: test_tokeniser test_i2p test_code_gen test_vm test_calculator
 
 # full test of all individual components, and integration
 #test: calculator_test.c calculator.c calculator.h tokeniser.c tokeniser.h #tokeniser_test.c i2p.c i2p.h i2p_test.c code_gen.c code_gen.h code_gen_test.c stack.c #stack.h vm.c vm.h vm_test.c
@@ -34,5 +37,5 @@ test_vm: stack.c stack.h vm.c vm.h vm_test.c
 	prove -v ./test_vm.t
 
 test_calculator: calculator_test.c calculator.c calculator.h
-	gcc -o test_calculator.t calculator_test.c calculator.c tokeniser.c i2p.c
+	gcc -o test_calculator.t calculator_test.c calculator.c tokeniser.c i2p.c code_gen.c vm.c stack.c -lm
 	prove -v ./test_calculator.t
