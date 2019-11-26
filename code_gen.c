@@ -19,7 +19,7 @@ int isNumber(char *line, char temp[2]){
 
     char test_for_minus= temp[0] - '0';   //temp[0] - '0'; will take the first character from temp and convert it to a number
 
-    if(isdigit(*line) || (test_for_minus==-3 && strlen(line)>2)){ 
+    if(isdigit(*line) || (test_for_minus==-3 && strlen(line)>2) || test_for_minus==-2){ 
       /* 
       *  isdigit() returns true if the string is a number. However, this returns false for negative numbers, to account for this the first character of temp
       *  which was converted to a number is checked against -3 ("-" converts to -3). If the first character is a - and it is greater than length 2 (2 because of \n)
@@ -39,9 +39,9 @@ int isFloat(char *line){
 
     int floatTest=0;
 
-    for (int count=0;count<25; count++){
+    for (int count=0;count<strlen(line); count++){
         //Loop through the input checking for a "." character
-        if (line[count]=='.'){
+        if(line[count]=='.'){
             floatTest=1;
             break;
         }
@@ -57,6 +57,7 @@ char * operatorSwitching(char *first_char){
     * Returns: operator - pointer to a char array containing the assembly code
     */
     int intOperator=*first_char - '0';  //Converts the character to it's integer equivalent (Needed for case switching)
+    printf("%i\n", intOperator);
     char *operator;
 
     switch(intOperator){  //Using the resulting number, convert to assembly code
